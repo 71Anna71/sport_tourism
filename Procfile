@@ -1,0 +1,1 @@
+web: gunicorn sport_tourism.wsgi
