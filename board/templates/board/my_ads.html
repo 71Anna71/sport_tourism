@@ -1,0 +1,22 @@
+{% extends 'board/base.html' %}
+{% block content %}
+<a href="{% url 'index' %}" class="back-link">← Вернуться к объявлениям</a>
+<h1>Мои объявления</h1>
+{% for ad in объявления %}
+    <div class="ad-card">
+        {% if ad.изображение %}
+          <img src="{{ ad.изображение.url }}" alt="">
+        {% endif %}
+        <div class="ad-card-content">
+          <a href="{% url 'ad_detail' ad.pk %}" class="ad-title">{{ ad.заголовок }}</a>
+          <div class="ad-meta">
+            {{ ad.категория.название }} |
+            {{ ad.дата_создания|date:"d.m.Y" }}
+          </div>
+        </div>
+    </div>
+{% empty %}
+    <p><i>У вас пока нет объявлений.</i></p>
+{% endfor %}
+
+{% endblock %}

@@ -1,0 +1,40 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Доска объявлений{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'board/style.css' %}">
+</head>
+<body>
+  <div class="container">
+    {% block content %}{% endblock %}
+  </div>
+
+  {# — Модалка для увеличения фото — #}
+  <div id="modal" class="modal" style="display:none;">
+    <span class="close" id="modalClose">&times;</span>
+    <img class="modal-content" id="modalImg">
+  </div>
+
+  <script>
+  document.addEventListener("DOMContentLoaded", function() {
+    var modal = document.getElementById("modal");
+    var modalImg = document.getElementById("modalImg");
+    var modalClose = document.getElementById("modalClose");
+    document.querySelectorAll('.ad-detail-img').forEach(function(img) {
+      img.onclick = function(){
+        modal.style.display = "block";
+        modalImg.src = this.src;
+      }
+    });
+    modalClose.onclick = function() {
+      modal.style.display = "none";
+    }
+    modal.onclick = function(e) {
+      if (e.target === modal) modal.style.display = "none";
+    }
+  });
+  </script>
+</body>
+</html>

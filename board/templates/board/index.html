@@ -1,0 +1,222 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Список объявлений</title>
+  <link rel="stylesheet" href="{% static 'board/style.css' %}">
+</head>
+<body>
+
+
+<div class="container">
+  <div class="top-bar">
+    <div class="user-block">
+      {% if user.is_authenticated %}
+        <div class="user-greet-big">
+          <span class="greet-bold">Привет, <a href="{% url 'user_profile' user.username %}">{{ user.username }}</a>!</span>
+          <form method="post" action="{% url 'logout' %}" style="display:inline;">
+            {% csrf_token %}
+            <button class="logout-link" type="submit">Выйти</button>
+          </form>
+        </div>
+        <a href="{% url 'add_ad' %}" class="btn-main add-ad-btn" style="margin-top:14px;">+ Добавить объявление</a>
+      {% endif %}
+    </div>
+    <div class="user-actions-row">
+      {% if user.is_authenticated %}
+        <a href="{% url 'my_ads' %}" class="btn-dark">Мои объявления</a>
+        <a href="{% url 'favorites' %}" class="btn-dark">Избранное</a>
+      {% else %}
+        <a href="{% url 'login' %}" class="btn-main login-btn">Вход</a>
+        <a href="{% url 'signup' %}" class="btn-main signup-btn">Регистрация</a>
+      {% endif %}
+    </div>
+  </div>
+
+
+  
+  
+
+  <h1>Список объявлений</h1>
+  
+  <form method="get" class="filter-form">
+    <div class="filter-row">
+      <input type="text" name="q" value="{{ request.GET.q  }}" placeholder="Поиск по заголовку и описанию…">
+	  <button type="submit" class="btn-main">Искать</button>
+	</div>
+	
+	
+	
+	<div class="categories-list" style="margin-bottom: 24px;">
+		<a href="{% url 'index' %}?{% if request.GET.q %}q={{ request.GET.q }}{% endif %}"
+		   class="category-btn{% if not request.GET.category %} active{% endif %}">Все</a>
+		{% for c in категории %}
+		  <a href="?category={{ c.id }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}"
+			 class="category-btn{% if request.GET.category == c.id|stringformat:'s' %} active{% endif %}">
+			{{ c.название }}
+		  </a>
+		{% endfor %}
+	  </div>
+  
+	
+	<input type="hidden" name="category" id="category-hidden" value="{{ request.GET.category }}">
+	
+	<!-- ДОПОЛНИТЕЛЬНЫЕ ФИЛЬТРЫ ДЛЯ ПОХОДА -->
+  <div id="hike-fields" style="display:none;">
+    <div class="filter-row">
+      <label>Регион:</label>
+      <select name="region">
+        <option value="">Любой</option>
+        {% for r in regions %}
+          <option value="{{ r }}" {% if r == request.GET.region %}selected{% endif %}>{{ r }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="filter-row">
+      <label>Сложность:</label>
+      <select name="difficulty">
+        <option value="">Любая</option>
+        {% for d in difficulties %}
+          <option value="{{ d }}" {% if d == request.GET.difficulty %}selected{% endif %}>{{ d }}</option>
+        {% endfor %}
+      </select>
+    </div>
+	
+    <div class="filter-row">
+      <label>Тип путешествия:</label>
+      <select name="trip_type">
+        <option value="">Любой</option>
+        <option value="Пеший" {% if request.GET.trip_type == "Пеший" %}selected{% endif %}>Пеший</option>
+        <option value="Лыжный" {% if request.GET.trip_type == "Лыжный" %}selected{% endif %}>Лыжный</option>
+        <option value="Водный" {% if request.GET.trip_type == "Водный" %}selected{% endif %}>Водный</option>
+        <option value="Горный" {% if request.GET.trip_type == "Горный" %}selected{% endif %}>Горный</option>
+      </select>
+    </div>
+    <div class="filter-row">
+      <label>Стоимость:</label>
+      <select name="cost">
+        <option value="">Любая</option>
+        <option value="0-1000" {% if request.GET.cost == "0-1000" %}selected{% endif %}>0-1000</option>
+        <option value="1000-3000" {% if request.GET.cost == "1000-3000" %}selected{% endif %}>1000-3000</option>
+        <option value="3000-10000" {% if request.GET.cost == "3000-10000" %}selected{% endif %}>3000-10000</option>
+        <option value="10000-999999" {% if request.GET.cost == "10000-999999" %}selected{% endif %}>10000+</option>
+      </select>
+    </div>
+  </div>
+  
+  
+  <!-- ДОПОЛНИТЕЛЬНЫЕ ФИЛЬТРЫ ДЛЯ ГИДА -->
+	<div id="guide-fields" style="display:none;">
+	  <div class="filter-row">
+		<label>Тип путешествия:</label>
+		<select name="guide_trip_type">
+		  <option value="">Любой</option>
+		  <option value="Пеший" {% if request.GET.guide_trip_type == "Пеший" %}selected{% endif %}>Пеший</option>
+		  <option value="Лыжный" {% if request.GET.guide_trip_type == "Лыжный" %}selected{% endif %}>Лыжный</option>
+		  <option value="Водный" {% if request.GET.guide_trip_type == "Водный" %}selected{% endif %}>Водный</option>
+		  <option value="Горный" {% if request.GET.guide_trip_type == "Горный" %}selected{% endif %}>Горный</option>
+		</select>
+	  </div>
+	</div>
+
+
+    {% if request.GET.category %}
+	  {% for c in категории %}
+		{% if c.id|stringformat:'s' == request.GET.category %}
+		  {% if c.название == "Поход" or c.название == "Гид" %}
+			<div class="filter-row">
+			  <button type="submit" class="btn-main">Применить</button>
+			  <a href="{% url 'index' %}" class="link">Сбросить</a>
+			</div>
+		  {% endif %}
+		{% endif %}
+	  {% endfor %}
+	{% endif %}
+
+
+
+  {% for ad in объявления %}
+  <div class="ad-card">
+    {% if ad.изображение %}
+	  <img src="{{ ad.изображение.url }}" alt="" class="ad-list-img" style="cursor:zoom-in;" draggable="false">
+	{% endif %}
+
+    <div class="ad-card-content">
+      <a href="{% url 'ad_detail' ad.pk %}" class="ad-title">{{ ad.заголовок }}</a>
+      <div class="ad-meta">
+        {{ ad.категория.название }}  <br>
+        Автор: <a href="{% url 'user_profile' ad.author.username %}">{{ ad.author.username }}</a> |  Дата создания:
+        {{ ad.дата_создания|date:"d.m.Y" }}
+      </div>
+      
+
+      {# Кнопки только для автора или суперпользователя #}
+      {% if ad.author == user or user.is_superuser %}
+        <a href="{% url 'edit_ad' ad.pk %}">✏️ Редактировать</a>
+        <a href="{% url 'delete_ad' ad.pk %}">🗑️ Удалить</a>
+      {% endif %}
+    </div>
+  </div>
+{% empty %}
+  <p><i>Ничего не найдено.</i></p>
+{% endfor %}
+
+<div id="img-modal" style="display:none; position:fixed; z-index:10000; left:0; top:0; width:100vw; height:100vh; background:rgba(0,0,0,0.85); align-items:center; justify-content:center;">
+  <span id="close-modal" style="position:absolute; top:30px; right:50px; font-size:44px; color:white; cursor:pointer;">&times;</span>
+  <img id="img-modal-content" src="" style="max-width:90vw; max-height:85vh; box-shadow:0 8px 32px #000;">
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  function toggleExtraFields() {
+    let activeBtn = document.querySelector('.category-btn.active');
+    let val = activeBtn ? activeBtn.textContent.trim() : '';
+    document.getElementById('hike-fields').style.display = (val === 'Поход') ? '' : 'none';
+    document.getElementById('guide-fields').style.display = (val === 'Гид') ? '' : 'none';
+  }
+  toggleExtraFields();
+
+  // Отслеживаем изменения выбора категории
+  document.querySelectorAll('.category-btn').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      setTimeout(toggleExtraFields, 100); // дождаться смены active-класса
+    });
+  });
+
+  // Если страница открыта уже с категорией
+  toggleExtraFields();
+});
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  var modal = document.getElementById('img-modal');
+  var modalImg = document.getElementById('img-modal-content');
+  var closeBtn = document.getElementById('close-modal');
+  // Для всех картинок-объявлений
+  document.querySelectorAll('.ad-list-img').forEach(function(img){
+    img.onclick = function(){
+      modal.style.display = 'flex';
+      modalImg.src = img.src;
+    }
+  });
+  if(closeBtn){
+    closeBtn.onclick = function(){
+      modal.style.display = 'none';
+      modalImg.src = "";
+    }
+  }
+  // Закрытие по клику вне картинки
+  modal.onclick = function(e){
+    if(e.target === modal) {
+      modal.style.display = 'none';
+      modalImg.src = "";
+    }
+  }
+});
+</script>
+
+</body>
+</html>

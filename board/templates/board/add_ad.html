@@ -1,0 +1,73 @@
+{% extends 'board/base.html' %}
+{% load static %}
+{% block title %}Добавить объявление{% endblock %}
+{% block content %}
+<div class="form-container">
+  <a href="{% url 'index' %}" class="back-link">&larr; Назад</a>
+  <h1>Добавить объявление</h1>
+  <form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+	 {# ────────── остальные поля модели Объявление ────────── #}
+    {{ form.заголовок.label_tag }}{{ form.заголовок }}
+    {{ form.категория.label_tag }}{{ form.категория }}
+    {{ form.контакты.label_tag }}{{ form.контакты }}
+    {{ form.регион.label_tag }}{{ form.регион }}
+    {{ form.описание.label_tag }}{{ form.описание }}
+
+    {# ────────── красивый input для файла ────────── #}
+    <label for="id_изображение">Изображение:</label>
+    <div class="file-wrapper">
+      <span class="file-label">🔼 Загрузить изображение</span>
+      {{ form.изображение }}  {# сам input type=file – теперь скрыт через CSS #}
+      <div class="file-name" id="file-name"></div>
+    </div>
+
+    {# ────────── блоки доп.деталей ────────── #}
+    <div id="pohod-fields" style="display:none;margin-top:24px;">
+      <h3>Детали похода</h3>
+      {{ pohod_form.as_p }}
+    </div>
+    <div id="gid-fields" style="display:none;margin-top:24px;">
+      <h3>Детали гида</h3>
+      {{ gid_form.as_p }}
+    </div>
+    <div id="snar-fields" style="display:none;margin-top:24px;">
+      <h3>Детали снаряжения</h3>
+      {{ snar_form.as_p }}
+    </div>
+
+    <button type="submit" class="btn-main" style="margin-top:20px;">Сохранить</button>
+  </form>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const cat = document.getElementById('id_категория');
+  const blocks = {
+    'Поход': document.getElementById('pohod-fields'),
+    'Гид': document.getElementById('gid-fields'),
+    'Снаряжение': document.getElementById('snar-fields'),
+	};
+
+  function toggle() {
+    const v = cat.options[cat.selectedIndex].text.trim();
+    Object.entries(blocks).forEach(([key, el]) => {
+      if (el) {
+        if (key === v) {
+          el.style.display = 'block';
+          el.querySelectorAll('input,select,textarea').forEach(i => i.disabled = false);
+        } else {
+          el.style.display = 'none';
+          el.querySelectorAll('input,select,textarea').forEach(i => i.disabled = true);
+        }
+      }
+    });
+  }
+  if (cat) {
+    cat.addEventListener('change', toggle);
+    toggle();
+  }
+});
+</script>
+ 
+{% endblock %}

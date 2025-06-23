@@ -1,0 +1,38 @@
+{% extends 'board/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="form-container">
+  <a href="{% url 'ad_detail' form.instance.pk %}" class="back-link">&larr; Назад к объявлению</a>
+  <h1>Редактировать объявление</h1>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+	
+	{% if pohod_form %}
+      <div id="pohod-fields" style="margin-top:24px;">
+        <h3>Детали похода</h3>
+        {{ pohod_form.as_p }}
+      </div>
+    {% endif %}
+
+    {% if gid_form %}
+      <div id="gid-fields" style="margin-top:24px;">
+        <h3>Детали гида</h3>
+        {{ gid_form.as_p }}
+      </div>
+    {% endif %}
+
+    {% if snar_form %}
+      <div id="snar-fields" style="margin-top:24px;">
+        <h3>Детали снаряжения</h3>
+        {{ snar_form.as_p }}
+      </div>
+    {% endif %}
+    
+
+    <button type="submit" class="btn-main">Сохранить изменения</button>
+    <a href="{% url 'ad_detail' ad.pk %}">Отмена</a>
+  </form>
+</div>
+{% endblock %}

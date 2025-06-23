@@ -1,0 +1,24 @@
+{% extends 'board/base.html' %}
+{% block content %}
+  <div class="profile">
+    <h2>Профиль пользователя: {{ profile_user.username }}</h2>
+    <p>Email: {{ profile_user.email }}</p>
+    <h3>Объявления пользователя:</h3>
+    <ul>
+      {% for ad in объявления %}
+        <li><a href="{% url 'ad_detail' ad.pk %}">{{ ad.заголовок }}</a></li>
+      {% empty %}
+        <li>Нет объявлений</li>
+      {% endfor %}
+    </ul>
+  </div>
+  <div class="profile-stats" style="margin-bottom: 18px;">
+		<h3>Статистика пользователя:</h3>
+		<ul>
+			<li>Объявлений размещено: <b>{{ count_ads }}</b></li>
+			<li>Всего просмотров: <b>{{ count_views }}</b></li>
+			<li>Всего отзывов: <b>{{ count_comments }}</b></li>
+		</ul>
+	</div>
+{% endblock %}
+

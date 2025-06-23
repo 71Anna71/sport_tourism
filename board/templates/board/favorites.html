@@ -1,0 +1,37 @@
+{% extends 'board/base.html' %}
+{% load static %}
+
+{% block title %}Избранные объявления{% endblock %}
+
+{% block content %}
+<div class="container">
+	<a href="{% url 'index' %}" class="back-link">← Вернуться к объявлениям</a>
+    <h1>Избранные объявления</h1>
+    
+    {% if объявления %}
+        {% for ad in объявления %}
+            <div class="ad-card">
+                {% if ad.изображение %}
+                    <img src="{{ ad.изображение.url }}" alt="Изображение" class="ad-card-img">
+                {% endif %}
+                <div class="ad-card-content">
+                    <a href="{% url 'ad_detail' ad.pk %}" class="ad-title">{{ ad.заголовок }}</a>
+                    <div class="ad-meta">
+                        {{ ad.категория.название }} |
+                        Автор: <a href="{% url 'user_profile' ad.author.username %}">{{ ad.author.username }}</a> |
+                        {{ ad.дата_создания|date:"d.m.Y" }}
+                    </div>
+                    <div class="ad-desc">{{ ad.описание|truncatewords:20 }}</div>
+                    <form method="post" action="{% url 'toggle_favorite' ad.pk %}" style="margin-top:8px;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn-danger">Удалить из избранного</button>
+                    </form>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p><i>У вас нет избранных объявлений.</i></p>
+    {% endif %}
+    
+</div>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'board/base.html' %}
+{% block content %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Удалить объявление</title>
+    <link rel="stylesheet" href="{% static 'board/style.css' %}">
+</head>
+<body>
+<div class="container form-container">
+    <h2>Удалить объявление</h2>
+    <p>Вы уверены, что хотите удалить объявление "<b>{{ ad.заголовок }}</b>"?</p>
+    {% if ad.изображение %}
+        <img src="{{ ad.изображение.url }}" alt="Фото" style="width:110px; border-radius:8px; margin-bottom:12px;">
+    {% endif %}
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn-danger" style="margin-right:14px;">Удалить</button>
+        <a href="{% url 'ad_detail' ad.pk %}" class="btn-main">Отмена</a>
+    </form>
+</div>
+</body>
+</html>
+
+{% endblock %}

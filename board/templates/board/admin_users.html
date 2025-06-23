@@ -1,0 +1,29 @@
+{% extends 'board/base.html' %}
+{% block title %}Пользователи{% endblock %}
+
+{% block content %}
+<h1>Список пользователей</h1>
+<table class="nice-table">
+  <thead>
+    <tr>
+      <th>#</th><th>Логин</th><th>e-mail</th><th>Роль</th><th>Действия</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for u in users %}
+      <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>{{ u.username }}</td>
+        <td>{{ u.email|default:"—" }}</td>
+        <td>{% if u.is_superuser %}admin{% else %}user{% endif %}</td>
+        <td>
+          <a href="{% url 'admin:auth_user_change' u.id %}" target="_blank">✏️</a>
+          {% if not u.is_superuser %}
+            | <a href="{% url 'admin:auth_user_delete' u.id %}" target="_blank">🗑️</a>
+          {% endif %}
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
