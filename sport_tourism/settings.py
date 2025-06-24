@@ -23,11 +23,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 #SECRET_KEY = 'django-insecure-(0*gaf5p_rwt90qrkg(#)a5)@ai$mw(qxg*uou^!th7m=^@c^n'
 SECRET_KEY = os.environ.get('SECRET_KEY', 'your-very-secret-key')
-
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 #DEBUG = True
-DEBUG = False  # Для продакшена!
+#DEBUG = True  # Для продакшена!
 
 
 
@@ -98,18 +98,27 @@ WSGI_APPLICATION = 'sport_tourism.wsgi.application'
 #DATABASES = {
 #    'default': {
 #        'ENGINE': 'django.db.backends.postgresql',
-##        'NAME': 'ads',       # или другое имя БД латиницей!
+#        'NAME': 'ads',       # или другое имя БД латиницей!
 #        'USER': 'postgres',    # если не меняла пользователя
 #        'PASSWORD': '11111',  # подставь свой пароль!
 #        'HOST': 'localhost',
 #        'PORT': '5433',
- #   }
+#    }
 #}
 DATABASES = {
     'default': dj_database_url.config(
-        default='postgresql://postgres:jSrmbaMgoTDQFhJwMyswmCSPOdQiwXrx@tramway.proxy.rlwy.net:53933/railway'
+        default=f'sqlite:///{BASE_DIR / "db.sqlite3"}',
+        conn_max_age=600,
+        ssl_require=False
     )
 }
+
+
+#DATABASES = {
+ #   'default': dj_database_url.config(
+ #       default='postgresql://postgres:jSrmbaMgoTDQFhJwMyswmCSPOdQiwXrx@tramway.proxy.rlwy.net:53933/railway'
+ #   )
+#}
 
 
 
@@ -161,6 +170,8 @@ USE_TZ = True
 STATIC_URL = 'static/'
 if not DEBUG:
     STATIC_ROOT = BASE_DIR / 'staticfiles'
+    #STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 

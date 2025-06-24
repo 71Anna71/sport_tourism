@@ -1,1 +1,1 @@
-web: gunicorn sport_tourism.wsgi
+web: gunicorn sport_tourism.wsgi:application
