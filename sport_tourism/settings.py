@@ -22,8 +22,19 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 #SECRET_KEY = 'django-insecure-(0*gaf5p_rwt90qrkg(#)a5)@ai$mw(qxg*uou^!th7m=^@c^n'
+
+
+
+
+
+
 SECRET_KEY = os.environ.get('SECRET_KEY', 'your-very-secret-key')
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
+
+
+
+
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 #DEBUG = True
@@ -99,14 +110,17 @@ WSGI_APPLICATION = 'sport_tourism.wsgi.application'
 
 #DATABASES = {
 #    'default': {
-##        'ENGINE': 'django.db.backends.postgresql',
-  #      'NAME': 'ads',       # или другое имя БД латиницей!
-   #     'USER': 'postgres',    # если не меняла пользователя
-    #    'PASSWORD': '11111',  # подставь свой пароль!
-     #   'HOST': 'localhost',
-      #  'PORT': '5433',
+#        'ENGINE': 'django.db.backends.postgresql',
+#        'NAME': 'ads',       # или другое имя БД латиницей!
+#        'USER': 'postgres',    # если не меняла пользователя
+#        'PASSWORD': '11111',  # подставь свой пароль!
+#        'HOST': 'localhost',
+#        'PORT': '5433',
 #    }
 #}
+
+
+
 DATABASES = {
     'default': dj_database_url.config(
         default=f'postgres://postgres:11111@localhost:5433/ads'
@@ -169,9 +183,9 @@ USE_TZ = True
 
 #STATIC_URL = 'static/'
 STATIC_URL = '/static/'
-if not DEBUG:
-    STATIC_ROOT = BASE_DIR / 'staticfiles'
-    STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+#if not DEBUG:
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+   # STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 #STATIC_ROOT = BASE_DIR / 'staticfiles'
 #STATICFILES_DIRS = [
  #   BASE_DIR / 'board' / 'static',
@@ -197,6 +211,6 @@ LOGIN_REDIRECT_URL = '/'
 import os
 
 #MEDIA_URL = '/media/'
-MEDIA_URL = 'https://disk.yandex.ru/d/bFQ7aISkvnzDhg'
+MEDIA_URL = 'https://disk.yandex.ru/d/bFQ7aISkvnzDhg/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
