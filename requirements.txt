@@ -2,4 +2,4 @@ Django==5.2.1
 psycopg2-binary==2.9.10
 gunicorn
 dj-database-url==2.1.0
-
+whitenoise
