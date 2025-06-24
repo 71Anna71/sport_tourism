@@ -5,7 +5,7 @@
 {% for ad in объявления %}
     <div class="ad-card">
         {% if ad.изображение %}
-          <img src="{{ ad.изображение.url }}" alt="">
+          <img src="{{ ad.изображение_url }}" alt="">
         {% endif %}
         <div class="ad-card-content">
           <a href="{% url 'ad_detail' ad.pk %}" class="ad-title">{{ ad.заголовок }}</a>

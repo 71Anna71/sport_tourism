@@ -13,7 +13,7 @@
     <h2>Удалить объявление</h2>
     <p>Вы уверены, что хотите удалить объявление "<b>{{ ad.заголовок }}</b>"?</p>
     {% if ad.изображение %}
-        <img src="{{ ad.изображение.url }}" alt="Фото" style="width:110px; border-radius:8px; margin-bottom:12px;">
+        <img src="{{ ad.изображение_url }}" alt="Фото" style="width:110px; border-radius:8px; margin-bottom:12px;">
     {% endif %}
     <form method="post">
         {% csrf_token %}

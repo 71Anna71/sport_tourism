@@ -9,6 +9,7 @@
 <body>
 
 
+
 <div class="container">
   <div class="top-bar">
     <div class="user-block">
@@ -27,13 +28,15 @@
       {% if user.is_authenticated %}
         <a href="{% url 'my_ads' %}" class="btn-dark">Мои объявления</a>
         <a href="{% url 'favorites' %}" class="btn-dark">Избранное</a>
+        {% if user.is_superuser %}
+          <a href="{% url 'all_users' %}" class="btn-dark">Пользователи</a>
+        {% endif %}
       {% else %}
         <a href="{% url 'login' %}" class="btn-main login-btn">Вход</a>
         <a href="{% url 'signup' %}" class="btn-main signup-btn">Регистрация</a>
       {% endif %}
     </div>
   </div>
-
 
   
   
@@ -140,7 +143,7 @@
   {% for ad in объявления %}
   <div class="ad-card">
     {% if ad.изображение %}
-	  <img src="{{ ad.изображение.url }}" alt="" class="ad-list-img" style="cursor:zoom-in;" draggable="false">
+	  <img src="{{ ad.изображение_url }}" alt="" class="ad-list-img" style="cursor:zoom-in;" draggable="false">
 	{% endif %}
 
     <div class="ad-card-content">
