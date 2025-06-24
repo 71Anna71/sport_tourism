@@ -4,7 +4,7 @@ body {
     /* Можно фон-картинку: */
     background: 
       linear-gradient(120deg, #f6faff 0%, #dbeafe 100%),
-      url('/static/board/bg.jpg') no-repeat center center fixed;
+      /* url('/static/board/bg.jpg') no-repeat center center fixed;*/
     background-size: cover;
     font-family: 'Segoe UI', Arial, sans-serif;
     margin: 0;
