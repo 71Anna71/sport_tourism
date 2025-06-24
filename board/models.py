@@ -86,7 +86,7 @@ class ГидДетали(models.Model):
 class СнаряжениеДетали(models.Model):
     объявление  = models.OneToOneField(Объявление, on_delete=models.CASCADE, related_name='снаряжение_детали')
     вес = models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True)
-    стоимость = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    стоимость = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True) 
     def __str__(self):
         return f'Снаряжение: {self.объявление.заголовок}'
 
@@ -99,3 +99,7 @@ class Комментарий(models.Model):
     дата_создания   = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return f"{self.пользователь.username}: {self.текст[:30]}"
+    
+class Ad(models.Model):
+    title = models.CharField(max_length=100)
+    изображение_url = models.URLField()

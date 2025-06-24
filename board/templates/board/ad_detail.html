@@ -41,7 +41,7 @@
         <h2>О гиде</h2>
         <div style="display:flex; gap:20px; margin-top:16px;">
           {% if ad.изображение %}
-			  <img src="{{ ad.изображение.url }}" alt="Фото объявления" id="main-image" style="max-width:350px; cursor:zoom-in;" draggable="false">
+			  <img src="{{ ad.изображение_url }}" alt="Фото объявления" id="main-image" style="max-width:350px; cursor:zoom-in;" draggable="false">
 		  {% endif %}
 		  
           <div>
@@ -131,7 +131,7 @@
 	   <h1>{{ ad.заголовок }}</h1>
       {# — Вывод для остальных категорий — #}
       {% if ad.изображение %}
-		  <img src="{{ ad.изображение.url }}" alt="Фото объявления" id="main-image" style="max-width:350px; cursor:zoom-in;" draggable="false">
+		  <img src="{{ ad.изображение_url }}" alt="Фото объявления" id="main-image" style="max-width:350px; cursor:zoom-in;" draggable="false">
 	  {% endif %}
       
 	  

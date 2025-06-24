@@ -196,5 +196,7 @@ LOGIN_REDIRECT_URL = '/'
 
 import os
 
-MEDIA_URL = '/media/'
+#MEDIA_URL = '/media/'
+MEDIA_URL = 'https://disk.yandex.ru/d/bFQ7aISkvnzDhg'
+
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
